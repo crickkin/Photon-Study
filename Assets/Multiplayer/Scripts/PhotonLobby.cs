@@ -20,14 +20,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.ConnectUsingSettings();
     }
-
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Player has connected to the Photon master");
-
-        battleButton.SetActive(true);
-    }
-
+    
     public void OnBattleButtonClick()
     {
         Debug.Log("Battle button was clicked");
@@ -44,9 +37,12 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    public override void OnJoinedRoom()
+    #region Photon Methods
+    public override void OnConnectedToMaster()
     {
-        Debug.Log("joined a room");
+        Debug.Log("Player has connected to the Photon master");
+        PhotonNetwork.AutomaticallySyncScene = true;
+        battleButton.SetActive(true);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -74,6 +70,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CreateRoom("Room" + randomRoomName, roomOps);
     }
+    #endregion
 
     private void SingletonInitialize()
     {
